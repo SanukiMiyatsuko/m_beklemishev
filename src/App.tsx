@@ -21,7 +21,7 @@ function App() {
       const seq = inputA.split(",").map(x => parseInt(x)).filter(x => !isNaN(x));
       const n = parseInt(inputB);
       const M = parseInt(inputM);
-      const inputString = `${inputA}[${inputB}]`
+      const inputString = `(${inputA})[${inputB}]`
       const outputString = expand(seq,n,M);
       setInputLevel(`${M}ベクレミシェフ`);
       setInput(`入力：${inputString}`);
