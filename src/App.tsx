@@ -6,7 +6,6 @@ function App() {
   const [inputA, setInputA] = useState("");
   const [inputB, setInputB] = useState("0");
   const [inputM, setInputM] = useState("0");
-  const [inputLevel, setInputLevel] = useState("0ベクレミシェフ");
   const [input, setInput] = useState("入力：");
   const [output, setOutput] = useState("出力：");
   const [outputError, setOutputError] = useState("");
@@ -17,15 +16,16 @@ function App() {
     setOutputError("");
     try {
       if (inputA === "") throw Error("Aの入力が必要です");
+      if (inputB === "") throw Error("Bの入力が必要です");
+      if (inputM === "") throw Error("Mの入力が必要です");
       if (!/^\d+(,\d+)*$/.test(inputA)) throw Error("Aには数列を入力してください");
       const seq = inputA.split(",").map(x => parseInt(x)).filter(x => !isNaN(x));
       const n = parseInt(inputB);
       const M = parseInt(inputM);
-      const inputString = `(${inputA})[${inputB}]`
+      const inputString = `(${inputA})[${inputB}]_${M}`
       const outputString = expand(seq,n,M);
-      setInputLevel(`${M}ベクレミシェフ`);
       setInput(`入力：${inputString}`);
-      setOutput(`出力：${outputString}`);
+      setOutput(`出力：(${outputString})`);
     } catch (error) {
       if (error instanceof Error) setOutputError(error.message);
       else setOutputError("不明なエラー");
@@ -74,7 +74,6 @@ function App() {
             <div className="notification is-danger">{outputError}</div>
           ) : (
             <span>
-              {inputLevel}<br />
               {input}<br />
               {output}
             </span>
