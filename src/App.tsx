@@ -6,6 +6,7 @@ function App() {
   const [inputA, setInputA] = useState("");
   const [inputB, setInputB] = useState("0");
   const [inputM, setInputM] = useState("0");
+  const [inputLevel, setInputLevel] = useState("0-ベクレミシェフ");
   const [input, setInput] = useState("入力：");
   const [output, setOutput] = useState("出力：");
   const [outputError, setOutputError] = useState("");
@@ -22,8 +23,9 @@ function App() {
       const seq = inputA.split(",").map(x => parseInt(x)).filter(x => !isNaN(x));
       const n = parseInt(inputB);
       const M = parseInt(inputM);
-      const inputString = `(${inputA})[${inputB}]_${M}`
+      const inputString = `(${inputA})[${inputB}]`
       const outputString = expand(seq,n,M);
+      setInputLevel(`${M}-ベクレミシェフ`);
       setInput(`入力：${inputString}`);
       setOutput(`出力：(${outputString})`);
     } catch (error) {
@@ -35,7 +37,7 @@ function App() {
 
   return (
     <div className="app">
-      <header>Mベクレミシェフ</header>
+      <header>M-ベクレミシェフ計算機</header>
       <main>
         <p className="rdm">
           数列の入力はa_0,a_1,...,a_nの形式で行ってください。<br />
@@ -74,6 +76,7 @@ function App() {
             <div className="notification is-danger">{outputError}</div>
           ) : (
             <span>
+              {inputLevel}<br />
               {input}<br />
               {output}
             </span>
