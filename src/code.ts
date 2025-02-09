@@ -3,14 +3,15 @@ export function expand(seq: number[], n: number, M: number): number[] {
     const last = seq[p0];
     if (last === 0) return seq.slice(-1);
     const parent = ((): number => {
+        if (M === 0) return p0-1;
         const setP = (n: number): number[] => {
             const result: number[] = [];
             const pPredn = p(n-1);
             if (pPredn === null) return result;
-            for (let i = pPredn-1; i > -1; i--)
+            for (let i = 0; i < pPredn; i++)
                 if (lt(seq.slice(i), seq.slice(pPredn)))
                     result.push(i);
-            return result.reverse();
+            return result;
         }
         const p = (n: number): number | null => {
             if (n === 0) return p0;
@@ -28,23 +29,17 @@ export function expand(seq: number[], n: number, M: number): number[] {
             return fp(u(x,n),n-1);
         }
         const plist = [p0];
-        for (let m = 1; m < M; m++) {
+        for (let m = 1; m <= M; m++) {
             const pm = p(m);
             if (pm === null) return -1;
             if (2 <= last-seq[pm]) return pm;
-            for (let n = 1; n < m; n++)
+            for (let n = 1; n < M-1 && n < m; n++)
                 if (lt(seq.slice(pm,u(pm,n)),seq.slice(plist[n],plist[n-1])))
                     return fp(pm,n);
             plist.push(pm);
         }
-        const pM = p(M);
-        if (pM === null) return -1;
-        if (2 <= last-seq[pM]) return pM;
-        for (let n = 1; n < M-1; n++)
-            if (lt(seq.slice(pM,u(pM,n)),seq.slice(plist[n],plist[n-1])))
-                return fp(pM,n);
-        return fp(pM,M-1);
-    })()
+        return fp(plist[M],M-1);
+    })();
     const GP = seq.slice(0,parent+1);
     const bp = seq.slice(parent+1,-1).concat([last-1]);
     let BP: number[] = [];
